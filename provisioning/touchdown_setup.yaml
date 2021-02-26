@@ -1,0 +1,18 @@
+---
+- name: Generic Shared Setup by Vagrant/Ansible
+  hosts: all
+
+  tasks:
+
+  - name: Static DNS Setup Domain Hosts
+    become: yes
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '.*{{ item.host }}$'
+      line: "{{ item.ip }} {{ item.host }} {{ item.host }}.{{ item.domain }}"
+      state: present
+    with_items:
+      - { domain: 'example.tld', ip: '192.168.123.110', host: 'p0web0' }
+      - { domain: 'example.tld', ip: '192.168.123.110', host: 'p0web1' }
+      - { domain: 'example.tld', ip: '192.168.123.120', host: 'p0app0' }
+      - { domain: 'example.tld', ip: '192.168.123.121', host: 'p0app1' }
