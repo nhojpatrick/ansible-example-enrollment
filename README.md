@@ -39,3 +39,11 @@ ruser@touchdown:/vagrant/setup/$ ssh-keygen
 ruser@touchdown:/vagrant/setup/$ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts-p0-dc0 -i hosts-p0-dc1 playbook_1_enrol_0_known_hosts.yaml --ask-pass
 ruser@touchdown:/vagrant/setup/$ ansible-playbook -i hosts-p0-dc0 -i hosts-p0-dc1 playbook_1_enrol_1_authorized_key.yaml --ask-pass
 ```
+
+### Checking
+
+```bash
+vagrant@touchdown:/vagrant/setup$ su - ruser
+ruser@touchdown:~$ cd /vagrant/setup/
+ruser@touchdown:/vagrant/setup/$ ansible-playbook -i hosts-p0-dc0 -i hosts-p0-dc1 playbook_2_check.yaml
+```

@@ -1,0 +1,25 @@
+---
+- name: Enrol
+  hosts: all
+  gather_facts: no
+  become: no
+
+  tasks:
+    - name: check remote user .ssh
+      find:
+        path: /home/{{ ruser }}/.ssh
+      register: find_dotssh
+
+    - name: show .ssh
+      debug:
+        msg: "files={{ [item.path] }}"
+      with_items: "{{ find_dotssh.files }}"
+
+    - name: Clurp authorized_keys content
+      ansible.builtin.slurp:
+        src: /home/{{ ruser }}/.ssh/authorized_keys
+      register: slurp_authorized_keys
+
+    - name: Display authorized_keys content
+      ansible.builtin.debug:
+        msg: "{{ slurp_authorized_keys['content'] }}"
