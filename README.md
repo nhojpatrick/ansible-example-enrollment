@@ -28,3 +28,14 @@ vagrant@touchdown:~$ sudo apt install sshpass
 vagrant@touchdown:~$ cd /vagrant/setup/
 vagrant@touchdown:/vagrant/setup$ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts-p0-dc0 -i hosts-p0-dc1 playbook_0_setup.yaml
 ```
+
+### Enrollment
+
+```bash
+vagrant@touchdown:/vagrant/setup$ su - ruser
+ruser@touchdown:~$ cd /vagrant/setup/
+ruser@touchdown:/vagrant/setup/$ ansible-galaxy collection install ansible.posix
+ruser@touchdown:/vagrant/setup/$ ssh-keygen
+ruser@touchdown:/vagrant/setup/$ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts-p0-dc0 -i hosts-p0-dc1 playbook_1_enrol_0_known_hosts.yaml --ask-pass
+ruser@touchdown:/vagrant/setup/$ ansible-playbook -i hosts-p0-dc0 -i hosts-p0-dc1 playbook_1_enrol_1_authorized_key.yaml --ask-pass
+```

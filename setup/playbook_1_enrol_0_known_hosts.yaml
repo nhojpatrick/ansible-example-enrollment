@@ -1,0 +1,19 @@
+---
+- name: Enrol
+  hosts: all
+  gather_facts: no
+  become: no
+
+  tasks:
+    - name: get ssh port, default 22
+      delegate_to: localhost
+      ansible.builtin.set_fact:
+        a_ansible_ssh_port: "{{ hostvars[inventory_hostname]['ansible_ssh_port'] | default('22') }}"
+
+    - name: Ensure ssh host key known
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        dest: ~/.ssh/known_hosts
+        create: yes
+        state: present
+        line: "{{ lookup('pipe', 'ssh-keyscan -trsa -p' + a_ansible_ssh_port + ' ' + inventory_hostname) }}"
