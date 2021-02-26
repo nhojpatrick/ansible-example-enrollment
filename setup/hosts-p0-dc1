@@ -1,0 +1,6 @@
+
+[webservers]
+p0web1.example.tld
+
+[all:children]
+webservers

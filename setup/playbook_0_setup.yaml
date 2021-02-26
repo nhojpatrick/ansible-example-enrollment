@@ -1,0 +1,32 @@
+---
+- name: Allow ssh password login
+  hosts: all
+
+  tasks:
+
+  - name: Enable ssh password login
+    become: yes
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication .*'
+      line: "PasswordAuthentication yes"
+      state: present
+    register: ssh_passwordauthentication
+
+  - name: Reboot due to sshd_config changed
+    become: true
+    ansible.builtin.reboot:
+    when:
+      ssh_passwordauthentication is changed
+
+- name: Ensure ruser exists
+  hosts: all
+  tasks:
+  - name: Ensure ruser exists 'localhost' Tasks
+    include_tasks: tasks_0_setup_user.yaml
+
+- name: Ensure ruser exists 'localhost'
+  hosts: localhost
+  tasks:
+  - name: Ensure ruser exists 'localhost' Tasks
+    include_tasks: tasks_0_setup_user.yaml

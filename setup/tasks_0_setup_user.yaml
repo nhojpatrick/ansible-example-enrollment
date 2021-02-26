@@ -1,0 +1,20 @@
+---
+- name: Ensure ruser exists
+  become: true
+  user:
+    name: ruser
+    password: "{{ rpassword | password_hash('sha512') }}"
+    shell: /bin/bash
+    create_home: true
+
+- name: Secure ruser homedir
+  become: true
+  file:
+    path: /home/{{ ruser }}
+    mode: u+rwx,g-rwx,o-rwx
+
+- name: Remove .ssh if pre-existing
+  become: true
+  file:
+    path: /home/{{ ruser }}/.ssh
+    state: absent
